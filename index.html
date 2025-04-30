@@ -3,310 +3,343 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mr. Rice</title>
-
-  <!-- ===== WINDOWS‑RETRO + EXTRA EFFECTS ===== -->
+  <title>Home</title>
   <style>
-    :root{
-      --win-bg:#c0c0c0;--win-face:#d4d0c8;--win-light:#ffffff;
-      --win-shadow:#808080;--win-accent:#000080;
+    /* ===== Windows 95 Base ===== */
+    body {
+      background-color: #008080;
+      font-family: 'Microsoft Sans Serif', Arial, sans-serif;
+      color: black;
+      margin: 0;
+      padding: 0;
+      cursor: url('/images/pigeon-cursor.cur'), auto;
+      overflow: hidden;
     }
-    html,body{
-      margin:0;padding:0;background:var(--win-bg);color:#000;
-      font-family:"Segoe UI",Tahoma,Verdana,sans-serif;
+    .window {
+      position: absolute;
+      background-color: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #aaa;
+      border-bottom-color: #aaa;
+      box-shadow: 2px 2px 0 #000;
+      animation: fadeIn 0.5s ease-out;
     }
-    a{color:var(--win-accent)}
-
-    /* ---------- MAIN WINDOW ---------- */
-    .window{
-      max-width:900px;margin:3rem auto 5rem;background:var(--win-face);
-      border:2px outset var(--win-light);
-      box-shadow:inset 1px 1px var(--win-light),
-                 inset -1px -1px var(--win-shadow);
-      padding:2rem;position:relative;z-index:1;
+    .title-bar {
+      background: linear-gradient(to right, #000080, #0000cd);
+      color: white;
+      padding: 2px 5px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      cursor: move;
+      user-select: none;
     }
-    header{
-      text-align: center;
+    .buttons {
+      display: flex;
     }
-    h1{
-      font-size:2.2rem;background:var(--win-accent);color:#fff;
-      padding:.5rem 1rem;border:2px solid #000;
-      margin:0 0 .6rem;display:inline-block;
-    }
-    h2{font-size:1.2rem;margin:.8rem 0}
-    .tag{font-style:italic;margin-bottom:1.5rem}
-
-    /* ---------- SUB‑WINDOW / DIALOG ---------- */
-    .win-box{
-      background:#fff;border:2px outset var(--win-light);
-      margin-bottom:2rem;padding:1rem;
-    }
-    .win-title-bar{
-      background:linear-gradient(#000080,#000060);
-      color:#fff;font-weight:bold;padding:4px 8px;
-      border:1px solid #000;border-bottom:none;
-      margin:-1rem -1rem 1rem;
-    }
-    ul{list-style:square;padding-left:1.4rem;line-height:1.7}
-
-    /* ---------- BADGES ---------- */
-    .badges{
-      display:flex;flex-wrap:wrap;gap:6px;margin:1rem 0;
-    }
-    .badges img{height:28px}
-
-    /* ---------- GALLERY GRID ---------- */
-    .gallery-grid{
-      display:flex;flex-wrap:wrap;gap:1rem;
-    }
-    .gallery-grid img{
-      width:calc(50% - .5rem);max-width:100%;height:auto;
-      border:2px ridge var(--win-shadow);
-      animation:float 6s ease-in-out infinite;
+    .button {
+      width: 16px;
+      height: 14px;
+      margin-left: 2px;
+      background-color: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #aaa;
+      border-bottom-color: #aaa;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
     }
 
-    /* ---------- TASKBAR ---------- */
-    .taskbar{
-      position:fixed;left:0;right:0;bottom:0;height:34px;
-      background:var(--win-bg);
-      border-top:2px ridge var(--win-light);
-      display:flex;align-items:center;padding:0 6px;
-      box-shadow:inset 1px 1px var(--win-light),
-                 inset -1px -1px var(--win-shadow);
-      z-index:998;
+    /* ===== Taskbar ===== */
+    #taskbar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 32px;
+      background-color: #c0c0c0;
+      border-top: 2px solid #fff;
+      border-left: 2px solid #fff;
+      border-right: 2px solid #aaa;
+      border-bottom: 2px solid #aaa;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      box-sizing: border-box;
     }
-    .start-btn{
-      background:var(--win-bg);border:2px outset var(--win-light);
-      padding:3px 14px;font-weight:bold;cursor:pointer;
-      animation:pulse 2s infinite;
+    #start-button {
+      background-color: #000080;
+      color: white;
+      padding: 2px 8px;
+      border: 2px solid #fff;
+      border-right-color: #aaa;
+      border-bottom-color: #aaa;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 10px;
     }
-    .start-btn:active{border:2px inset var(--win-light)}
-    .taskbar-spacer{flex:1}
-    .clock{font-size:.9rem}
+    #start-button:active {
+      border-top-color: #aaa;
+      border-left-color: #aaa;
+      border-bottom-color: #fff;
+      border-right-color: #fff;
+    }
+    #clock {
+      margin-left: auto;
+      font-size: 12px;
+      user-select: none;
+      font-family: monospace;
+    }
 
-    /* ---------- START MENU ---------- */
-    .start-menu{
-      position:fixed;bottom:34px;left:0;width:220px;display:none;
-      background:var(--win-bg);border:2px ridge var(--win-light);
-      box-shadow:inset 1px 1px var(--win-light),
-                 inset -1px -1px var(--win-shadow);
-      animation:slideUp .3s ease-out backwards;z-index:999;
+    /* ===== Content Styling ===== */
+    section { margin: 10px; }
+    h2 { margin-bottom: 5px; }
+    .grid { display: flex; flex-wrap: wrap; }
+    .photo {
+      max-width: 150px;
+      margin: 5px;
+      border: 2px solid #000;
+      animation: flap 1s infinite alternate;
     }
-    .start-menu header{
-      background:var(--win-accent);color:#fff;font-weight:bold;
-      padding:4px 8px;border-bottom:1px solid #000;
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      margin: 4px;
+      font-size: 12px;
+      background-color: #fff;
+      border: 2px solid #000;
+      border-right-color: #aaa;
+      border-bottom-color: #aaa;
+      border-left-color: #fff;
+      border-top-color: #fff;
+      border-radius: 2px;
     }
-    .start-menu a{
-      display:block;padding:6px 12px;font-size:.9rem;
-      text-decoration:none;color:#000;
-      border-bottom:1px solid #80808066;
-    }
-    .start-menu a:hover{background:var(--win-accent);color:#fff}
 
-    /* ---------- MOVING BACKGROUND DECOR ---------- */
-    .bg-stripes,.bg-stripes2{
-      position:fixed;top:0;left:0;width:100%;height:100%;
-      pointer-events:none;z-index:-3;
+    /* ===== Icon Buttons ===== */
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px;
+      padding: 2px 6px;
+      background: #c0c0c0;
+      border: 2px solid #fff;
+      border-right-color: #aaa;
+      border-bottom-color: #aaa;
+      font-size: 12px;
+      text-decoration: none;
+      color: black;
+      user-select: none;
     }
-    .bg-stripes{
-      background:repeating-linear-gradient(
-        135deg,rgba(255,255,255,.03)0 6px,transparent 6px 12px);
-      animation:bgShift 40s linear infinite;
+    .icon-button:hover {
+      background: #000080;
+      color: white;
+      border-color: #000080 #000080 #000080 #000080;
     }
-    .bg-stripes2{
-      background:repeating-linear-gradient(
-        315deg,rgba(0,0,0,.05)0 8px,transparent 8px 16px);
-      animation:bgShift2 60s linear infinite;
-    }
-    .gear{
-      position:fixed;font-size:40px;color:rgba(0,0,0,.07);
-      pointer-events:none;z-index:-2;
-    }
-    .gear1{top:12%;left:80%;animation:spin 40s linear infinite}
-    .gear2{top:72%;left:8%;font-size:60px;animation:spinRev 55s linear infinite}
-    .gear3{top:45%;left:50%;font-size:50px;animation:spin 70s linear infinite}
 
-    /* ---------- KEYFRAMES ---------- */
-    @keyframes pulse{0%{background:var(--win-bg)}50%{background:#dcdcdc}100%{background:var(--win-bg)}}
-    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-    @keyframes bgShift{from{background-position:0 0}to{background-position:400px 400px}}
-    @keyframes bgShift2{from{background-position:0 0}to{background-position:-500px -500px}}
-    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-    @keyframes spinRev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+    /* ===== Animations ===== */
+    @keyframes fadeIn { from { opacity: 0; transform: scale(0.9);} to { opacity: 1; transform: scale(1);} }
+    @keyframes flap { from { transform: rotate(-3deg);} to { transform: rotate(3deg);} }
+    @keyframes blink { 50% { opacity: 0.7; } }
+    .blink { animation: blink 1s step-end infinite; }
+    @keyframes fly {
+      0%   { transform: translateX(0) rotateY(0deg); }
+      50%  { transform: translateX(calc(100vw + 100px)) rotateY(0deg); }
+      51%  { transform: translateX(calc(100vw + 100px)) rotateY(180deg); }
+      100% { transform: translateX(0) rotateY(180deg); }
+    }
+    #marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      background: #000080;
+      color: white;
+      padding: 2px;
+    }
+    #marquee p {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 10s linear infinite;
+    }
+    @keyframes scroll-left { 0% { transform: translateX(0);} 100% { transform: translateX(-100%);} }
   </style>
 </head>
 <body>
+  <!-- Marquee -->
+  <div id="marquee"><p>Helloooooo! I love Pigeons!</p></div>
 
-  <!-- Moving background layers -->
-  <div class="bg-stripes"></div>
-  <div class="bg-stripes2"></div>
-  <div class="gear gear1">⚙</div>
-  <div class="gear gear2">⚙</div>
-  <div class="gear gear3">⚙</div>
-
-  <!-- Marquee header -->
-  <marquee behavior="alternate"
-           style="background:var(--win-accent);color:#fff;font-weight:bold;padding:4px">
-    Welcome to Mr.&nbsp;Rice's retro corner!
-  </marquee>
-
-  <!-- ===== MAIN WINDOW ===== -->
-  <div class="window">
-    <header>
-      <h1>&gt; Mr. Rice</h1>
-      <p class="tag">programmer // pigeon enjoyer</p>
-    </header>
-
-    <!-- Intro -->
-    <div class="win-box">
-      <div class="win-title-bar"><span class="win-title">whoami</span></div>
-      <p>
-        Hellooooo, I'm Mr.&nbsp;Rice. Mostly working on
-        <strong>Pigeon Engine</strong> or wxWidgets tools in EndeavourOS.
-        Hit me up for C++ collabs!
-      </p>
-    </div>
-
-    <!-- Badges -->
-    <div class="win-box">
-      <div class="win-title-bar"><span class="win-title">Cred‑Badges</span></div>
-      <div class="badges">
-        <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
-        <img src="https://img.shields.io/badge/Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white">
-        <img src="https://img.shields.io/badge/EndeavourOS-7950F2?style=for-the-badge&logo=endeavouros&logoColor=white">
-        <img src="https://img.shields.io/badge/Neovim-57A143?style=for-the-badge&logo=neovim&logoColor=white">
-        <img src="https://img.shields.io/badge/Gears_of_War_Fan-ED1C24?style=for-the-badge">
-        <img src="https://img.shields.io/badge/Pigeon_Enthusiast-808080?style=for-the-badge">
+  <!-- Main Window -->
+  <div class="window" id="main-window" style="width: 80%; height: 80%; top: 40px; left: 40px;">
+    <div class="title-bar" id="main-bar">
+      <span>About Me</span>
+      <div class="buttons">
+        <div class="button" id="minimize">–</div>
+        <div class="button" id="close">✕</div>
       </div>
     </div>
+    <div class="content" style="padding: 10px; overflow: auto; height: calc(100% - 24px);">
 
-    <!-- Inventory -->
-    <div class="win-box" id="inventory">
-      <div class="win-title-bar"><span class="win-title">Inventory – Mr. Rice</span></div>
-      <ul>
-        <li><strong>OS:</strong> EndeavourOS + i3</li>
-        <li><strong>Terminal:</strong> Kitty + Zsh</li>
-        <li><strong>Editor:</strong> Neovim</li>
-        <li><strong>Languages:</strong> C++, C, Assembly, Lua</li>
-        <li><strong>UI Frameworks:</strong> wxWidgets, Dear ImGui</li>
-      </ul>
-    </div>
+      <!-- About -->
+      <section id="about">
+        <h2>Hello! <span class="blink">👋</span></h2>
+        <p>I'm <strong>Mr Rice</strong>, a graphic programmer who loves low-level coding, and game engines</p>
+      </section>
 
-    <!-- Projects -->
-    <div class="win-box" id="projects">
-      <div class="win-title-bar"><span class="win-title">DEV Projects</span></div>
-      <ul>
-        <li><strong>Pigeon Engine</strong> – Lightweight C++ OpenGL/Vulkan playground</li>
-        <li><strong>wxTerm Mgr</strong> – Retro terminal‑style file navigator</li>
-        <li><strong>Discord Terry Bot</strong> – Chaotic AI homage to Terry Davis</li>
-        <li><strong>Vulnerable Flask App</strong> – SQL‑inj training playground</li>
-      </ul>
-    </div>
+      <!-- Project Showcase -->
+      <section id="showcase">
+        <h2>Project Showcase</h2>
+        <div class="grid">
+          
+          <div class="window" style="width: 200px; margin: 8px; position: relative;">
+            <a href="https://github.com/elias6969/pigeon-forge" target="_blank" style="text-decoration: none; color: inherit;">
+              <div class="title-bar">Pigeon Forge</div>
+            </a>
+            <!-- Optional image -->
+            <!-- <div style="padding:5px;"><img src="/images/retrochat.png" alt="RetroChat Screenshot" class="photo"></div> -->
+          </div>
+      
+          <div class="window" style="width: 200px; margin: 8px; position: relative;">
+            <a href="https://github.com/elias6969/pigeon-engine" target="_blank" style="text-decoration: none; color: inherit;">
+              <div class="title-bar">Pigeon Engine</div>
+            </a>
+            <!-- <div style="padding:5px;"><img src="/images/pigeonai.png" alt="PigeonAI Screenshot" class="photo"></div> -->
+          </div>
+      
+          <div class="window" style="width: 200px; margin: 8px; position: relative;">
+            <a href="https://github.com/elias6969/pigeon-nest" target="_blank" style="text-decoration: none; color: inherit;">
+              <div class="title-bar">Pigeon Nest</div>
+            </a>
+            <!-- <div style="padding:5px;"><img src="/images/pixelpainter.png" alt="PixelPainter Screenshot" class="photo"></div> -->
+          </div>
+      
+        </div>
+      </section>
+      
 
-    <!-- Gallery -->
-<!-- ===== improved “Artifacts” section ===== -->
-<div class="win-box gallery">
-  <div class="win-title-bar"><span class="win-title">Artifacts</span></div>
+      <!-- Photos -->
+      <section id="photos">
+        <h2>Literally Me</h2>
+        <div class="grid">
+          <img src="lain1.jpg" alt="Lain" class="photo">
+          <img src="LittleBigPlanet.jpg" alt="LittleBigPlanet" class="photo">
+          <img src="pony.jpg" alt="Pony" class="photo">
+          <img src="punpun.jpg" alt="Punpun" class="photo">
+          <img src="Awesomeface.jpg" alt="Awesome Face" class="photo">
+          <img src="CAnime.jpg" alt="Anime C Book" class="photo">
+        </div>
+      </section>
 
-  <!-- new masonry‑ish CSS Grid (auto‑fill) -->
-  <div class="gallery-grid">
-    <img src="pony.jpg"             alt="MLP Nerd Pony">
-    <img src="punpun.jpg"           alt="Punpun">
-    <img src="lain1.jpg"            alt="Lain">
-    <img src="littlebigplanet.jpg"  alt="Little Big Planet">
-    <img src="CAnime.jpg"           alt="C Anime">
-  </div>
-</div>
-
-<!-- add / replace these rules inside your <style> block -->
-<style>
-  /* make cells equal width, images crop to 260 px tall */
-  .gallery-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-    gap:1rem;
-  }
-  .gallery-grid img{
-    width:100%;
-    height:260px;          /* uniform height */
-    object-fit:cover;      /* crop but keep aspect */
-    border:2px ridge var(--win-shadow);
-    transition:transform .25s;
-  }
-  .gallery-grid img:hover{
-    transform:scale(1.05);
-  }
-</style>
-
-
-    <!-- Gears of War 3 -->
-    <div class="win-box">
-      <div class="win-title-bar"><span class="win-title">Gears of War 3 Forever</span></div>
-      <p>Chainsaw bayonets &amp; Horde‑mode all‑nighters since 2011. Wanna jump back in? Hit me up!</p>
-      <ul>
-        <li>Fav map: <em>Checkout</em></li>
-        <li>Main loadout: Lancer &amp; Gnasher</li>
-        <li>Mode: Horde 2.0 w/ friends</li>
-      </ul>
-      <img src="https://i.imgur.com/6jRZgoq.jpeg"
-           alt="Gears squad"
-           style="width:100%;border:2px ridge var(--win-shadow)">
-    </div>
-
-    <footer style="text-align:center;margin-top:2rem;font-style:italic">
-      &copy; Mr.&nbsp;Rice — coded in a dimly‑lit terminal window.
-    </footer>
-  </div>
-
-  <!-- ===== TASKBAR & START MENU ===== -->
-  <!-- ===== TASKBAR WITH SOCIAL LINKS ===== -->
-  <div class="taskbar">
-    <button class="start-btn" id="startBtn">Start</button>
-    <div class="taskbar-spacer"></div>
-    <div class="clock" id="clock">00:00</div>
-    <div class="social-links" style="display:flex;gap:8px;margin-left:12px;align-items:center;">
-      <a href="https://github.com/YourUser" target="_blank" title="GitHub">
-        <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub"/>
-      </a>
-      <a href="https://stackoverflow.com/users/YourID" target="_blank" title="Stack Overflow">
-        <img src="https://img.shields.io/badge/StackOverflow-F48024?style=flat-square&logo=stackoverflow&logoColor=white" alt="StackOverflow"/>
-      </a>
-      <a href="https://discord.com/users/YourDiscordID" target="_blank" title="Discord">
-        <img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord"/>
-      </a>
+      <!-- Badges -->
+      <section id="badges">
+        <h2>Tools & Technologies</h2>
+        <h3>Favorites</h3>
+        <div>
+          <span class="badge">C++</span>
+          <span class="badge">C</span>
+          <span class="badge">Lua</span>
+          <span class="badge">OpenGL</span>
+          <span class="badge">Graphics Programming</span>
+          <span class="badge">Assembly</span>
+          <span class="badge">Python</span>
+          <span class="badge">Low-Level Programming</span>
+        </div>
+        <h3>Used (but not a fan)</h3>
+        <div>
+          <span class="badge">HTML</span>
+          <span class="badge">CSS</span>
+          <span class="badge">JavaScript</span>
+          <span class="badge">PHP</span>
+          <span class="badge">SQL</span>
+          <span class="badge">C#</span>
+        </div>
+        <h3>Setup</h3>
+        <div>
+          <span class="badge">EndeavourOS</span>
+          <span class="badge">i3</span>
+          <span class="badge">Kitty</span>
+          <span class="badge">Polybar</span>
+        <!-- <img src="your-screenshot-link.png" alt="My Setup Screenshot" style="max-width:100%;border:2px solid #000;margin:5px;">-->
+        </div>
+      </section>
+      
     </div>
   </div>
 
-  <!-- ===== START MENU ===== -->
-  <div class="start-menu" id="startMenu">
-    <header>Mr.&nbsp;Rice</header>
-    <a href="#inventory">&gt; Inventory</a>
-    <a href="#projects">&gt; Projects</a>
-    <a href="#" onclick="alert('Opening Paint…');return false;">&gt; mspaint.exe</a>
-    <a href="#" onclick="alert('Blue screen of doom!');return false;">&gt; Shut Down</a>
+  <!-- Connect Window -->
+  <div class="window" id="connect-window" style="width: 300px; top: 50px; left: calc(40px + 80% + 20px);">
+    <div class="title-bar" id="connect-bar">
+      <span>Connect with Me</span>
+      <div class="buttons">
+        <div class="button" id="connect-close">✕</div>
+      </div>
+    </div>
+    <div class="content" style="padding:10px;">
+      <a href="https://github.com/elias6969" class="icon-button" target="_blank">🐙 GitHub</a>
+      <a href="https://stackoverflow.com/users/17935669" class="icon-button" target="_blank">💡 StackOverflow</a>
+      <a href="https://discord.com/users/prettyboyelias" class="icon-button" target="_blank">💬 Discord</a>
+    </div>
   </div>
 
-  <!-- ===== JS MAGIC ===== -->
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <div id="start-button">Start</div>
+    <div id="clock">00:00</div>
+  </div>
+
+  <!-- Boot Sound -->
+  <audio id="bootSound" src="win95.mp3" preload="auto"></audio>
+
   <script>
-    /* live clock */
-    setInterval(() => {
+    // Clock
+    function updateClock() {
       const now = new Date();
-      document.getElementById('clock').textContent =
-        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }, 1000);
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
+      document.getElementById('clock').textContent = `${hh}:${mm}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    /* Start‑menu toggle */
-    const btn = document.getElementById('startBtn');
-    const menu = document.getElementById('startMenu');
-    btn.onclick = () => menu.style.display =
-      (menu.style.display === 'block' ? 'none' : 'block');
-    document.addEventListener('click', e => {
-      if (!menu.contains(e.target) && e.target !== btn) {
-        menu.style.display = 'none';
-      }
+    // Start button plays boot sound
+    document.getElementById('start-button').addEventListener('click', () => {
+      document.getElementById('bootSound').play().catch(()=>{});
+      alert('Start menu coming soon!');
+    });
+
+    // Manual drag utility
+    function makeDraggable(winId, barId) {
+      const win = document.getElementById(winId);
+      const bar = document.getElementById(barId);
+      bar.addEventListener('mousedown', e => {
+        let shiftX = e.clientX - win.getBoundingClientRect().left;
+        let shiftY = e.clientY - win.getBoundingClientRect().top;
+        function onMouseMove(e) {
+          win.style.left = e.clientX - shiftX + 'px';
+          win.style.top  = e.clientY - shiftY + 'px';
+        }
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', () => {
+          document.removeEventListener('mousemove', onMouseMove);
+        }, { once: true });
+      });
+    }
+    makeDraggable('main-window','main-bar');
+    makeDraggable('connect-window','connect-bar');
+
+    // Minimize & Close logic
+    document.getElementById('minimize').addEventListener('click', () => {
+      const mw = document.getElementById('main-window'); mw.style.display='none';
+      setTimeout(() => mw.style.display='block', 500);
+    });
+    document.getElementById('close').addEventListener('click', () => {
+      document.getElementById('main-window').style.display='none';
+    });
+    document.getElementById('connect-close').addEventListener('click', () => {
+      document.getElementById('connect-window').style.display='none';
     });
   </script>
-
 </body>
 </html>
