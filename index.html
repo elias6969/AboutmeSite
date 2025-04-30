@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mr. Rice</title>
+
+  <!-- ===== WINDOWS‑RETRO + EXTRA EFFECTS ===== -->
+  <style>
+    :root{
+      --win-bg:#c0c0c0;--win-face:#d4d0c8;--win-light:#ffffff;
+      --win-shadow:#808080;--win-accent:#000080;
+    }
+    html,body{
+      margin:0;padding:0;background:var(--win-bg);color:#000;
+      font-family:"Segoe UI",Tahoma,Verdana,sans-serif;
+    }
+    a{color:var(--win-accent)}
+
+    /* ---------- MAIN WINDOW ---------- */
+    .window{
+      max-width:900px;margin:3rem auto 5rem;background:var(--win-face);
+      border:2px outset var(--win-light);
+      box-shadow:inset 1px 1px var(--win-light),
+                 inset -1px -1px var(--win-shadow);
+      padding:2rem;position:relative;z-index:1;
+    }
+    header{
+      text-align: center;
+    }
+    h1{
+      font-size:2.2rem;background:var(--win-accent);color:#fff;
+      padding:.5rem 1rem;border:2px solid #000;
+      margin:0 0 .6rem;display:inline-block;
+    }
+    h2{font-size:1.2rem;margin:.8rem 0}
+    .tag{font-style:italic;margin-bottom:1.5rem}
+
+    /* ---------- SUB‑WINDOW / DIALOG ---------- */
+    .win-box{
+      background:#fff;border:2px outset var(--win-light);
+      margin-bottom:2rem;padding:1rem;
+    }
+    .win-title-bar{
+      background:linear-gradient(#000080,#000060);
+      color:#fff;font-weight:bold;padding:4px 8px;
+      border:1px solid #000;border-bottom:none;
+      margin:-1rem -1rem 1rem;
+    }
+    ul{list-style:square;padding-left:1.4rem;line-height:1.7}
+
+    /* ---------- BADGES ---------- */
+    .badges{
+      display:flex;flex-wrap:wrap;gap:6px;margin:1rem 0;
+    }
+    .badges img{height:28px}
+
+    /* ---------- GALLERY GRID ---------- */
+    .gallery-grid{
+      display:flex;flex-wrap:wrap;gap:1rem;
+    }
+    .gallery-grid img{
+      width:calc(50% - .5rem);max-width:100%;height:auto;
+      border:2px ridge var(--win-shadow);
+      animation:float 6s ease-in-out infinite;
+    }
+
+    /* ---------- TASKBAR ---------- */
+    .taskbar{
+      position:fixed;left:0;right:0;bottom:0;height:34px;
+      background:var(--win-bg);
+      border-top:2px ridge var(--win-light);
+      display:flex;align-items:center;padding:0 6px;
+      box-shadow:inset 1px 1px var(--win-light),
+                 inset -1px -1px var(--win-shadow);
+      z-index:998;
+    }
+    .start-btn{
+      background:var(--win-bg);border:2px outset var(--win-light);
+      padding:3px 14px;font-weight:bold;cursor:pointer;
+      animation:pulse 2s infinite;
+    }
+    .start-btn:active{border:2px inset var(--win-light)}
+    .taskbar-spacer{flex:1}
+    .clock{font-size:.9rem}
+
+    /* ---------- START MENU ---------- */
+    .start-menu{
+      position:fixed;bottom:34px;left:0;width:220px;display:none;
+      background:var(--win-bg);border:2px ridge var(--win-light);
+      box-shadow:inset 1px 1px var(--win-light),
+                 inset -1px -1px var(--win-shadow);
+      animation:slideUp .3s ease-out backwards;z-index:999;
+    }
+    .start-menu header{
+      background:var(--win-accent);color:#fff;font-weight:bold;
+      padding:4px 8px;border-bottom:1px solid #000;
+    }
+    .start-menu a{
+      display:block;padding:6px 12px;font-size:.9rem;
+      text-decoration:none;color:#000;
+      border-bottom:1px solid #80808066;
+    }
+    .start-menu a:hover{background:var(--win-accent);color:#fff}
+
+    /* ---------- MOVING BACKGROUND DECOR ---------- */
+    .bg-stripes,.bg-stripes2{
+      position:fixed;top:0;left:0;width:100%;height:100%;
+      pointer-events:none;z-index:-3;
+    }
+    .bg-stripes{
+      background:repeating-linear-gradient(
+        135deg,rgba(255,255,255,.03)0 6px,transparent 6px 12px);
+      animation:bgShift 40s linear infinite;
+    }
+    .bg-stripes2{
+      background:repeating-linear-gradient(
+        315deg,rgba(0,0,0,.05)0 8px,transparent 8px 16px);
+      animation:bgShift2 60s linear infinite;
+    }
+    .gear{
+      position:fixed;font-size:40px;color:rgba(0,0,0,.07);
+      pointer-events:none;z-index:-2;
+    }
+    .gear1{top:12%;left:80%;animation:spin 40s linear infinite}
+    .gear2{top:72%;left:8%;font-size:60px;animation:spinRev 55s linear infinite}
+    .gear3{top:45%;left:50%;font-size:50px;animation:spin 70s linear infinite}
+
+    /* ---------- KEYFRAMES ---------- */
+    @keyframes pulse{0%{background:var(--win-bg)}50%{background:#dcdcdc}100%{background:var(--win-bg)}}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    @keyframes bgShift{from{background-position:0 0}to{background-position:400px 400px}}
+    @keyframes bgShift2{from{background-position:0 0}to{background-position:-500px -500px}}
+    @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes spinRev{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+  </style>
+</head>
+<body>
+
+  <!-- Moving background layers -->
+  <div class="bg-stripes"></div>
+  <div class="bg-stripes2"></div>
+  <div class="gear gear1">⚙</div>
+  <div class="gear gear2">⚙</div>
+  <div class="gear gear3">⚙</div>
+
+  <!-- Marquee header -->
+  <marquee behavior="alternate"
+           style="background:var(--win-accent);color:#fff;font-weight:bold;padding:4px">
+    Welcome to Mr.&nbsp;Rice's retro corner!
+  </marquee>
+
+  <!-- ===== MAIN WINDOW ===== -->
+  <div class="window">
+    <header>
+      <h1>&gt; Mr. Rice</h1>
+      <p class="tag">programmer // pigeon enjoyer</p>
+    </header>
+
+    <!-- Intro -->
+    <div class="win-box">
+      <div class="win-title-bar"><span class="win-title">whoami</span></div>
+      <p>
+        Hellooooo, I'm Mr.&nbsp;Rice. Mostly working on
+        <strong>Pigeon Engine</strong> or wxWidgets tools in EndeavourOS.
+        Hit me up for C++ collabs!
+      </p>
+    </div>
+
+    <!-- Badges -->
+    <div class="win-box">
+      <div class="win-title-bar"><span class="win-title">Cred‑Badges</span></div>
+      <div class="badges">
+        <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
+        <img src="https://img.shields.io/badge/Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white">
+        <img src="https://img.shields.io/badge/EndeavourOS-7950F2?style=for-the-badge&logo=endeavouros&logoColor=white">
+        <img src="https://img.shields.io/badge/Neovim-57A143?style=for-the-badge&logo=neovim&logoColor=white">
+        <img src="https://img.shields.io/badge/Gears_of_War_Fan-ED1C24?style=for-the-badge">
+        <img src="https://img.shields.io/badge/Pigeon_Enthusiast-808080?style=for-the-badge">
+      </div>
+    </div>
+
+    <!-- Inventory -->
+    <div class="win-box" id="inventory">
+      <div class="win-title-bar"><span class="win-title">Inventory – Mr. Rice</span></div>
+      <ul>
+        <li><strong>OS:</strong> EndeavourOS + i3</li>
+        <li><strong>Terminal:</strong> Kitty + Zsh</li>
+        <li><strong>Editor:</strong> Neovim</li>
+        <li><strong>Languages:</strong> C++, C, Assembly, Lua</li>
+        <li><strong>UI Frameworks:</strong> wxWidgets, Dear ImGui</li>
+      </ul>
+    </div>
+
+    <!-- Projects -->
+    <div class="win-box" id="projects">
+      <div class="win-title-bar"><span class="win-title">DEV Projects</span></div>
+      <ul>
+        <li><strong>Pigeon Engine</strong> – Lightweight C++ OpenGL/Vulkan playground</li>
+        <li><strong>wxTerm Mgr</strong> – Retro terminal‑style file navigator</li>
+        <li><strong>Discord Terry Bot</strong> – Chaotic AI homage to Terry Davis</li>
+        <li><strong>Vulnerable Flask App</strong> – SQL‑inj training playground</li>
+      </ul>
+    </div>
+
+    <!-- Gallery -->
+<!-- ===== improved “Artifacts” section ===== -->
+<div class="win-box gallery">
+  <div class="win-title-bar"><span class="win-title">Artifacts</span></div>
+
+  <!-- new masonry‑ish CSS Grid (auto‑fill) -->
+  <div class="gallery-grid">
+    <img src="pony.jpg"             alt="MLP Nerd Pony">
+    <img src="punpun.jpg"           alt="Punpun">
+    <img src="lain1.jpg"            alt="Lain">
+    <img src="littlebigplanet.jpg"  alt="Little Big Planet">
+    <img src="CAnime.jpg"           alt="C Anime">
+  </div>
+</div>
+
+<!-- add / replace these rules inside your <style> block -->
+<style>
+  /* make cells equal width, images crop to 260 px tall */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:1rem;
+  }
+  .gallery-grid img{
+    width:100%;
+    height:260px;          /* uniform height */
+    object-fit:cover;      /* crop but keep aspect */
+    border:2px ridge var(--win-shadow);
+    transition:transform .25s;
+  }
+  .gallery-grid img:hover{
+    transform:scale(1.05);
+  }
+</style>
+
+
+    <!-- Gears of War 3 -->
+    <div class="win-box">
+      <div class="win-title-bar"><span class="win-title">Gears of War 3 Forever</span></div>
+      <p>Chainsaw bayonets &amp; Horde‑mode all‑nighters since 2011. Wanna jump back in? Hit me up!</p>
+      <ul>
+        <li>Fav map: <em>Checkout</em></li>
+        <li>Main loadout: Lancer &amp; Gnasher</li>
+        <li>Mode: Horde 2.0 w/ friends</li>
+      </ul>
+      <img src="https://i.imgur.com/6jRZgoq.jpeg"
+           alt="Gears squad"
+           style="width:100%;border:2px ridge var(--win-shadow)">
+    </div>
+
+    <footer style="text-align:center;margin-top:2rem;font-style:italic">
+      &copy; Mr.&nbsp;Rice — coded in a dimly‑lit terminal window.
+    </footer>
+  </div>
+
+  <!-- ===== TASKBAR & START MENU ===== -->
+  <!-- ===== TASKBAR WITH SOCIAL LINKS ===== -->
+  <div class="taskbar">
+    <button class="start-btn" id="startBtn">Start</button>
+    <div class="taskbar-spacer"></div>
+    <div class="clock" id="clock">00:00</div>
+    <div class="social-links" style="display:flex;gap:8px;margin-left:12px;align-items:center;">
+      <a href="https://github.com/YourUser" target="_blank" title="GitHub">
+        <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub"/>
+      </a>
+      <a href="https://stackoverflow.com/users/YourID" target="_blank" title="Stack Overflow">
+        <img src="https://img.shields.io/badge/StackOverflow-F48024?style=flat-square&logo=stackoverflow&logoColor=white" alt="StackOverflow"/>
+      </a>
+      <a href="https://discord.com/users/YourDiscordID" target="_blank" title="Discord">
+        <img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord"/>
+      </a>
+    </div>
+  </div>
+
+  <!-- ===== START MENU ===== -->
+  <div class="start-menu" id="startMenu">
+    <header>Mr.&nbsp;Rice</header>
+    <a href="#inventory">&gt; Inventory</a>
+    <a href="#projects">&gt; Projects</a>
+    <a href="#" onclick="alert('Opening Paint…');return false;">&gt; mspaint.exe</a>
+    <a href="#" onclick="alert('Blue screen of doom!');return false;">&gt; Shut Down</a>
+  </div>
+
+  <!-- ===== JS MAGIC ===== -->
+  <script>
+    /* live clock */
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    /* Start‑menu toggle */
+    const btn = document.getElementById('startBtn');
+    const menu = document.getElementById('startMenu');
+    btn.onclick = () => menu.style.display =
+      (menu.style.display === 'block' ? 'none' : 'block');
+    document.addEventListener('click', e => {
+      if (!menu.contains(e.target) && e.target !== btn) {
+        menu.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
