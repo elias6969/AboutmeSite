@@ -1,0 +1,169 @@
+body {
+    background-color: #c0c0c0;
+    color: #000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* container is now a faux window */
+  .container {
+    max-width: 850px;
+    margin: 2rem auto 4rem auto;
+    padding: 2rem;
+    border: 2px outset #fff;
+    background-color: #d4d0c8;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  header h1 {
+    font-size: 2.5rem;
+    background-color: #000080;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    border-radius: 4px;
+    display: inline-block;
+  }
+  
+  .tag {
+    color: #000;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* marquee */
+  .marq {
+    background: #000080;
+    color: #fff;
+    padding: 4px;
+    font-weight: bold;
+    border-bottom: 2px ridge #fff;
+  }
+  
+  .intro {
+    background: #ffffff;
+    border: 2px inset #808080;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-pic {
+    width: 100px;
+    float: right;
+    margin-left: 1rem;
+    border: 2px groove #808080;
+  }
+  
+  .setup, .weird {
+    margin-bottom: 2rem;
+  }
+  
+  .windows-style .win-box {
+    background: #ffffff;
+    border: 2px outset #fff;
+    padding: 1rem;
+    border-radius: 0;
+  }
+  
+  .win-title-bar {
+    background: linear-gradient(to bottom, #000080, #000060);
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    font-weight: bold;
+    border: 1px solid #000;
+    border-bottom: none;
+    margin: -1rem -1rem 1rem -1rem;
+  }
+  
+  ul {
+    list-style-type: square;
+    padding-left: 1.5rem;
+    line-height: 1.7;
+  }
+  
+  .gallery {
+    background: #ffffff;
+    padding: 1.5rem;
+    border: 2px inset #808080;
+    margin-bottom: 2rem;
+  }
+  
+  .gallery h2 {
+    color: #000;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.3rem;
+  }
+  
+  .images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .images img {
+    width: 100%;
+    border: 2px ridge #808080;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .images img:hover {
+    transform: scale(1.01);
+    box-shadow: 0 0 10px #00008080;
+  }
+  
+  footer {
+    text-align: center;
+    color: #000;
+    margin-top: 4rem;
+    font-size: 0.9rem;
+    border-top: 2px groove #808080;
+    padding-top: 1rem;
+    font-style: italic;
+    background-color: #d4d0c8;
+  }
+  
+  /* windows taskbar */
+  .taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 34px;
+    background: #c0c0c0;
+    border-top: 2px ridge #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+  }
+  
+  .start-btn {
+    background: #c0c0c0;
+    border: 2px outset #fff;
+    padding: 2px 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .start-btn:active {
+    border: 2px inset #fff;
+  }
+  
+  .taskbar-spacer {
+    flex: 1;
+  }
+  
+  .clock {
+    margin-right: 8px;
+    font-size: 0.9rem;
+  }
+  
